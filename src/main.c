@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vrybalko <vrybalko@student.unit.ua>        +#+  +:+       +#+        */
+/*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:52:02 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/05 01:00:09 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/05 16:16:31 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ int			main(int argc, char **argv)
 	t_e		e;
 	int		i;
 
-    if (argc != 2)
-        return (0);
+	if (argc == 1)
+		return (0);
 	i = 0;
 	while (++i < argc)
 		check_arg(&e, argv[i]);
-    return (0);
+	return (0);
 }
