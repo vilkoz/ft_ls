@@ -1,36 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   open_dir.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/05 00:52:02 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/05 23:25:28 by vrybalko         ###   ########.fr       */
+/*   Created: 2017/03/05 23:03:06 by vrybalko          #+#    #+#             */
+/*   Updated: 2017/03/05 23:24:24 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-void		init_e(t_e *e)
+void		open_dir(t_e *e, char *arg)
 {
-	e->fl.list = 0;
-	e->fl.rec = 0;
-	e->fl.rev = 0;
-	e->fl.all = 0;
-	e->fl.time = 0;
-}
+	DIR			*dirp;
+	t_dirent	*dir;
 
-int			main(int argc, char **argv)
-{
-	t_e		e;
-	int		i;
-
-	if (argc == 1)
-		return (0);
-	i = 0;
-	init_e(&e);
-	while (++i < argc)
-		check_arg(&e, argv[i]);
-	return (0);
+	(void)e;
+	if ((dirp = opendir(arg)) == NULL)
+	{
+		perror(arg);
+		return ;
+	}
+	while ((dir = readdir(dirp)) != NULL)
+	{
+		if (e->fl.all != 1)
+			if (dir->d_name[0] == '.')
+				continue ;
+		if (e->fl.list)
+			stat_format(e, ft_strjoin(arg, ft_strjoin("/", dir->d_name)));
+		else
+			ft_putendl(dir->d_name);
+	}
 }

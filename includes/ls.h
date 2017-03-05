@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/05 19:22:41 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/05 23:15:50 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@
 typedef struct stat		t_stat;
 typedef struct passwd	t_passwd;
 typedef struct group	t_group;
+typedef struct dirent	t_dirent;
 
 typedef struct			s_fl
 {
@@ -53,5 +54,7 @@ typedef struct			s_e
 
 void					check_arg(t_e *e, char *arg);
 void					read_arg(t_e *e, char *arg);
+void					open_dir(t_e *e, char *arg);
+void					stat_format(t_e *e, char *arg);
 
 #endif

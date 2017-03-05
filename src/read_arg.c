@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/05 19:29:54 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/05 23:13:19 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,20 @@ void	print_size(t_stat el)
 
 void	print_time(t_stat el)
 {
-	char	*time;
-	char	*tmp;
+	char	*t;
 
-	time = ctime(&el.st_mtimespec.tv_sec);
-	tmp = time;
-	time = ft_strsub(time, 4, 12);
+	// time = ctime(&el.st_mtimespec.tv_sec);
+	// if (abs(time() - el.st_mtimespec.tv_sec))
+	// 	time = ft_strsub(time, 4, 12);
+	// else
+	// 	time = ft_strjoin(ft_strsub(time, 4));
+	t = ctime(&el.st_mtim.tv_sec);
+	if (abs(time(NULL) - el.st_mtim.tv_sec) < (60 * 60 * 24 * 365.2425) / 2)
+		t = ft_strsub(t, 4, 12);
+	else
+		t = ft_strjoin(ft_strsub(t, 4, 7), ft_strsub(t, 19, 5));
 	ft_putstr(" ");
-	ft_putstr(time);
+	ft_putstr(t);
 }
 
 void	print_name(char *arg)
@@ -158,6 +164,8 @@ int		is_folder(char *arg)
 
 void	read_arg(t_e *e, char *arg)
 {
-	is_folder(arg);
-	stat_format(e, arg);
+	if (is_folder(arg))
+		open_dir(e, arg);
+	else
+		stat_format(e, arg);
 }
