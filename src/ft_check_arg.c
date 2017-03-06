@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 01:00:29 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/05 14:50:27 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/06 01:13:56 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,4 @@ void		check_arg(t_e *e, char *arg)
 {
 	if (arg[0] == '-' && arg[1] != '\0')
 		enable_flag(e, arg);
-	else
-		read_arg(e, arg);
 }

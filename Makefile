@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/03/05 23:13:16 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/03/06 02:13:53 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ LIB = libft/libft.a
 SRCS = main.c					\
        read_arg.c			\
 			 ft_check_arg.c	\
-			 open_dir.c
+			 open_dir.c			\
+			 sort.c
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 

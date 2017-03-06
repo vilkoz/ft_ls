@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/05 23:13:19 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/06 03:12:17 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,22 @@
 ** TODO: add stat to list
 */
 
-void	print_type(t_stat el)
+void	print_type(t_stat el, t_arg *a)
 {
 	if ((el.st_mode & S_IFREG) != 0)
-		ft_putchar('-');
+		a->rights[0] = '-';
 	else if ((el.st_mode & S_IFDIR) != 0)
-		ft_putchar('d');
+		a->rights[0] = 'd';
 	else if ((el.st_mode & S_IFIFO) != 0)
-		ft_putchar('p');
+		a->rights[0] = 'p';
 	else if ((el.st_mode & S_IFCHR) != 0)
-		ft_putchar('c');
+		a->rights[0] = 'c';
 	else if ((el.st_mode & S_IFBLK) != 0)
-		ft_putchar('b');
+		a->rights[0] = 'b';
 	else if ((el.st_mode & S_IFLNK) != 0)
-		ft_putchar('l');
+		a->rights[0] = 'l';
 	else if ((el.st_mode & S_IFSOCK) != 0)
-		ft_putchar('s');
+		a->rights[0] = 's';
 }
 /*
 **#define S_ISUID 0004000   set user id on execution
@@ -42,61 +42,57 @@ void	print_type(t_stat el)
 /*
 ** TODO: xattr show
 */
-void	print_rights(t_stat el)
+void	print_rights(t_stat el, t_arg *a)
 {
-	((el.st_mode & S_IRUSR)) ? ft_putchar('r') : ft_putchar('-');
-	((el.st_mode & S_IWUSR)) ? ft_putchar('w') : ft_putchar('-');
+	((el.st_mode & S_IRUSR) != 0) ? a->rights[1] = 'r' : (a->rights[1] = '-');
+	((el.st_mode & S_IWUSR) != 0) ? a->rights[2] = 'w' : (a->rights[2] = '-');
 	if ((el.st_mode & S_ISUID) && (el.st_mode & S_IXUSR))
-		ft_putchar('s');
+		a->rights[3] = 's';
 	else if ((el.st_mode & S_ISUID) && (el.st_mode & S_IXUSR) == 0)
-		ft_putchar('S');
+		a->rights[3] = 'S';
 	else if ((el.st_mode & S_ISUID) == 0 && (el.st_mode & S_IXUSR))
-		ft_putchar('x');
+		a->rights[3] = 'x';
 	else
-		ft_putchar('-');
-	((el.st_mode & S_IRGRP)) ? ft_putchar('r') : ft_putchar('-');
-	((el.st_mode & S_IWGRP)) ? ft_putchar('w') : ft_putchar('-');
-	((el.st_mode & S_IXGRP)) ? ft_putchar('x') : ft_putchar('-');
-	((el.st_mode & S_IROTH)) ? ft_putchar('r') : ft_putchar('-');
-	((el.st_mode & S_IWOTH)) ? ft_putchar('w') : ft_putchar('-');
+		a->rights[3] = '-';
+	((el.st_mode & S_IRGRP) != 0) ? a->rights[4] = 'r' : (a->rights[4] = '-');
+	((el.st_mode & S_IWGRP) != 0) ? a->rights[5] = 'w' : (a->rights[5] = '-');
+	((el.st_mode & S_IXGRP) != 0) ? a->rights[6] = 'x' : (a->rights[6] = '-');
+	((el.st_mode & S_IROTH) != 0) ? a->rights[7] = 'r' : (a->rights[7] = '-');
+	((el.st_mode & S_IWOTH) != 0) ? a->rights[8] = 'w' : (a->rights[8] = '-');
 	if ((el.st_mode & S_IXOTH) && (el.st_mode & S_ISVTX) == 0)
-		ft_putchar('x');
+		a->rights[9] = 'x';
 	else if ((el.st_mode & S_IXOTH) && (el.st_mode & S_ISVTX))
-		ft_putchar('t');
+		a->rights[9] = 't';
 	else if ((el.st_mode & S_IXOTH) == 0 && (el.st_mode & S_ISVTX))
-		ft_putchar('T');
+		a->rights[9] = 'T';
 	else
-		ft_putchar('-');
+		a->rights[9] = '-';
 }
 /*
 ** TODO: count max size n_link in output
 */
-void	print_nlink(t_stat el)
+void	print_nlink(t_stat el, t_arg *a)
 {
-	ft_putstr("  ");
-	ft_putnbr(el.st_nlink);
+	a->nlinks = ft_itoa(el.st_nlink);
 }
 
-void	print_user(t_stat el)
+void	print_user(t_stat el, t_arg *a)
 {
 	t_passwd	*p;
 	t_group		*g;
 
 	p = getpwuid(el.st_uid);
-	ft_putstr(" ");
-	ft_putstr(p->pw_name);
+	a->user = ft_strdup(p->pw_name);
 	g = getgrgid(el.st_gid);
-	ft_putstr("  ");
-	ft_putstr(g->gr_name);
+	a->group = ft_strdup(g->gr_name);
 }
 
-void	print_size(t_stat el)
+void	print_size(t_stat el, t_arg *a)
 {
-	ft_putstr("  ");
-	ft_putnbr(el.st_size);
+	a->size = ft_itoa(el.st_size);
 }
 
-void	print_time(t_stat el)
+void	print_time(t_stat el, t_arg *a)
 {
 	char	*t;
 
@@ -110,41 +106,54 @@ void	print_time(t_stat el)
 		t = ft_strsub(t, 4, 12);
 	else
 		t = ft_strjoin(ft_strsub(t, 4, 7), ft_strsub(t, 19, 5));
-	ft_putstr(" ");
-	ft_putstr(t);
+	a->time = ft_strdup(t);
 }
 
-void	print_name(char *arg)
+t_arg	*init_arg(t_e *e, t_stat *s, char *name)
 {
+	t_arg	*arg;
 	char	*tmp;
 
-	ft_putstr("  ");
-	if ((tmp = ft_strrchr(arg, '/')) != NULL)
-		ft_putstr(tmp + 1);
+	tmp = NULL;
+	arg = (t_arg *)malloc(sizeof(t_arg));
+	arg->stat = (t_stat *)malloc(sizeof(t_stat));
+	arg->stat = ft_memcpy((void*)arg->stat, (void*)s, sizeof(t_stat));
+	if ((tmp = ft_strrchr(name, '/')) != NULL)
+		arg->name = ft_strsub(tmp + 1, 0, ft_strlen(tmp + 1));
 	else
-		ft_putstr(arg);
+		arg->name = ft_strdup(name);
+	if (e->fl.list == 1)
+		arg->rights = ft_strnew(11);
+	else
+		arg->rights = NULL;
+	arg->nlinks = NULL;
+	arg->user = NULL;
+	arg->size = NULL;
+	arg->time = NULL;
+	return (arg);
 }
 
-void	stat_format(t_e *e, char *arg)
+t_arg	*stat_format(t_e *e, char *arg)
 {
-	t_stat		el;
+	t_stat		s;
+	t_arg		*a;
 
-	if ((stat(arg, &el)) == -1)
+	if ((stat(arg, &s)) == -1)
 	{
 		perror(arg);
-		return ;
+		return (NULL);
 	}
+	a = init_arg(e, &s, arg);
 	if (e->fl.list == 1)
 	{
-		print_type(el);
-		print_rights(el);
-		print_nlink(el);
-		print_user(el);
-		print_size(el);
-		print_time(el);
-		print_name(arg);
-		ft_putchar('\n');
+		print_type(s, a);
+		print_rights(s, a);
+		print_nlink(s, a);
+		print_user(s, a);
+		print_size(s, a);
+		print_time(s, a);
 	}
+	return (a);
 }
 
 int		is_folder(char *arg)
@@ -162,10 +171,54 @@ int		is_folder(char *arg)
 		return (0);
 }
 
+void	print_list1(t_list *elem)
+{
+	t_arg	a;
+
+	a = *(t_arg *)elem->content;
+	printf("%s %s %s %s %s %s %s\n", a.rights, a.nlinks, a.user, a.group, a.size, a.time, a.name);
+}
+
+void	print_list2(t_list *elem)
+{
+	t_arg	a;
+
+	a = *(t_arg *)elem->content;
+	printf("%s\n", a.name);
+}
+
+void	lst_clear(void *a1, size_t size)
+{
+	t_arg	*a;
+
+	(void)size;
+	a = (t_arg *)a1;
+	ft_strdel(&a->rights);
+	ft_strdel(&a->nlinks);
+	ft_strdel(&a->user);
+	ft_strdel(&a->group);
+	ft_strdel(&a->size);
+	ft_strdel(&a->time);
+	ft_strdel(&a->name);
+	free(a->stat);
+}
+
 void	read_arg(t_e *e, char *arg)
 {
+	t_arg	*a;
+
 	if (is_folder(arg))
 		open_dir(e, arg);
 	else
-		stat_format(e, arg);
+	{
+		if ((a = stat_format(e, arg)) == NULL)
+			return ;
+		ft_lstadd(&(e->lst), ft_lstnew((void *)a, sizeof(t_arg)));
+	}
+	ft_sort(e);
+	if (e->fl.list == 1)
+		ft_lstiter(e->lst, print_list1);
+	else
+		ft_lstiter(e->lst, print_list2);
+	ft_lstdel(&e->lst, lst_clear);
 }

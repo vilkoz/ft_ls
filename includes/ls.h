@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/05 23:15:50 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/06 03:23:23 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,27 @@ typedef struct			s_fl
 typedef struct			s_e
 {
 	t_fl				fl;
+	int					va;
+	t_list				*lst;
 }						t_e;
+
+typedef struct			s_arg
+{
+	t_stat				*stat;
+	char				*rights;
+	char				*nlinks;
+	char				*user;
+	char				*group;
+	char				*size;
+	char				*time;
+	char				*name;
+}						t_arg;
 
 void					check_arg(t_e *e, char *arg);
 void					read_arg(t_e *e, char *arg);
 void					open_dir(t_e *e, char *arg);
-void					stat_format(t_e *e, char *arg);
+t_arg					*stat_format(t_e *e, char *arg);
+void					ft_sort(t_e *e);
+int						is_folder(char *arg);
 
 #endif
