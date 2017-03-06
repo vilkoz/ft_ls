@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:52:02 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/06 03:38:43 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/06 17:57:03 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ int			main(int argc, char **argv)
 	while (++i < argc)
 		check_arg(&e, argv[i]);
 	i = 0;
+	e.va = 0;
 	while (++i < argc)
 		if (argv[i][0] != '-' && (e.va = 1))
+			read_arg(&e, argv[i]);
+		else if (e.va == 1)
 			read_arg(&e, argv[i]);
 	if (e.va == 0)
 		read_arg(&e, ".");

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/06 04:07:38 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/06 18:21:56 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <pwd.h>
 # include <grp.h>
 # include <time.h>
+# define LEFT 23
+# define RIGHT 24
 
 /*
 ** struct				dirent
@@ -46,6 +48,16 @@ typedef struct			s_fl
 	int					all;
 	int					time;
 }						t_fl;
+
+typedef struct			s_len
+{
+	size_t				rights;
+	size_t				nlinks;
+	size_t				user;
+	size_t				group;
+	size_t				size;
+	size_t				time;
+}						t_len;
 
 typedef struct			s_e
 {
@@ -73,5 +85,6 @@ t_arg					*stat_format(t_e *e, char *arg);
 void					ft_sort(t_e *e);
 int						is_folder(char *arg);
 void					read_rec_dir(t_e *e, char *arg);
+void					print_list(t_e *e);
 
 #endif

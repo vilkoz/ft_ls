@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/06 04:14:56 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/06 21:38:55 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	print_type(t_stat el, t_arg *a)
 	else if ((el.st_mode & S_IFSOCK) != 0)
 		a->rights[0] = 's';
 }
+
 /*
 **#define S_ISUID 0004000   set user id on execution
 **#define S_ISGID 0002000   set group id on execution
@@ -42,10 +43,11 @@ void	print_type(t_stat el, t_arg *a)
 /*
 ** TODO: xattr show
 */
+
 void	print_rights(t_stat el, t_arg *a)
 {
-	((el.st_mode & S_IRUSR) != 0) ? a->rights[1] = 'r' : (a->rights[1] = '-');
-	((el.st_mode & S_IWUSR) != 0) ? a->rights[2] = 'w' : (a->rights[2] = '-');
+	a->rights[1] = ((el.st_mode & S_IRUSR) != 0) ? 'r' : '-';
+	a->rights[2] = ((el.st_mode & S_IWUSR) != 0) ? 'w' : '-';
 	if ((el.st_mode & S_ISUID) && (el.st_mode & S_IXUSR))
 		a->rights[3] = 's';
 	else if ((el.st_mode & S_ISUID) && (el.st_mode & S_IXUSR) == 0)
@@ -54,11 +56,11 @@ void	print_rights(t_stat el, t_arg *a)
 		a->rights[3] = 'x';
 	else
 		a->rights[3] = '-';
-	((el.st_mode & S_IRGRP) != 0) ? a->rights[4] = 'r' : (a->rights[4] = '-');
-	((el.st_mode & S_IWGRP) != 0) ? a->rights[5] = 'w' : (a->rights[5] = '-');
-	((el.st_mode & S_IXGRP) != 0) ? a->rights[6] = 'x' : (a->rights[6] = '-');
-	((el.st_mode & S_IROTH) != 0) ? a->rights[7] = 'r' : (a->rights[7] = '-');
-	((el.st_mode & S_IWOTH) != 0) ? a->rights[8] = 'w' : (a->rights[8] = '-');
+	a->rights[4] = ((el.st_mode & S_IRGRP) != 0) ? 'r' : '-';
+	a->rights[5] = ((el.st_mode & S_IWGRP) != 0) ? 'w' : '-';
+	a->rights[6] = ((el.st_mode & S_IXGRP) != 0) ? 'x' : '-';
+	a->rights[7] = ((el.st_mode & S_IROTH) != 0) ? 'r' : '-';
+	a->rights[8] = ((el.st_mode & S_IWOTH) != 0) ? 'w' : '-';
 	if ((el.st_mode & S_IXOTH) && (el.st_mode & S_ISVTX) == 0)
 		a->rights[9] = 'x';
 	else if ((el.st_mode & S_IXOTH) && (el.st_mode & S_ISVTX))
@@ -68,9 +70,7 @@ void	print_rights(t_stat el, t_arg *a)
 	else
 		a->rights[9] = '-';
 }
-/*
-** TODO: count max size n_link in output
-*/
+
 void	print_nlink(t_stat el, t_arg *a)
 {
 	a->nlinks = ft_itoa(el.st_nlink);
@@ -87,22 +87,52 @@ void	print_user(t_stat el, t_arg *a)
 	a->group = ft_strdup(g->gr_name);
 }
 
+char	*format_line(char *major, char *minor)
+{
+	size_t		l_maj;
+	size_t		l_min;
+	char		*res;
+
+	l_maj = ft_strlen(major);
+	l_min = ft_strlen(minor);
+	res = ft_strnew(10);
+	ft_memset((void *)res, ' ', 9);
+	while (l_maj > 0)
+	{
+		res[l_maj - 1 + 4] = major[l_maj - 1];
+		l_maj--;
+	}
+	while (l_min > 0)
+	{
+		res[l_min - 1 + 9] = minor[l_min - 1];
+		l_min--;
+	}
+	res[5] = ',';
+	return (res);
+}
+
 void	print_size(t_stat el, t_arg *a)
 {
-	a->size = ft_itoa(el.st_size);
+	char	*major;
+	char	*minor;
+
+	if ((el.st_mode & S_IFCHR) != 0)
+	{
+		major = ft_itoa(el.st_rdev & 0xff00u >> 8);
+		minor = ft_itoa(minor(el.st_rdev));
+		a->size = format_line(major, minor);
+	}
+	else
+		a->size = ft_itoa(el.st_size);
 }
 
 void	print_time(t_stat el, t_arg *a)
 {
 	char	*t;
 
-	// time = ctime(&el.st_mtimespec.tv_sec);
-	// if (abs(time() - el.st_mtimespec.tv_sec))
-	// 	time = ft_strsub(time, 4, 12);
-	// else
-	// 	time = ft_strjoin(ft_strsub(time, 4));
-	t = ctime(&el.st_mtim.tv_sec);
-	if (abs(time(NULL) - el.st_mtim.tv_sec) < (60 * 60 * 24 * 365.2425) / 2)
+	t = ctime(&el.st_mtimespec.tv_sec);
+	if (labs(time(NULL) - el.st_mtimespec.tv_sec) <
+			(60 * 60 * 24 * 365.2425) / 2)
 		t = ft_strsub(t, 4, 12);
 	else
 		t = ft_strjoin(ft_strsub(t, 4, 7), ft_strsub(t, 19, 5));
@@ -162,30 +192,11 @@ int		is_folder(char *arg)
 	t_stat		tmp;
 
 	if ((stat(arg, &tmp)) == -1)
-	{
-		perror(arg);
 		return (-1);
-	}
 	if (((tmp.st_mode) & S_IFDIR) != 0)
 		return (1);
 	else
 		return (0);
-}
-
-void	print_list1(t_list *elem)
-{
-	t_arg	a;
-
-	a = *(t_arg *)elem->content;
-	printf("%s %s %s %s %s %s %s\n", a.rights, a.nlinks, a.user, a.group, a.size, a.time, a.name);
-}
-
-void	print_list2(t_list *elem)
-{
-	t_arg	a;
-
-	a = *(t_arg *)elem->content;
-	printf("%s\n", a.name);
 }
 
 void	lst_clear(void *a1, size_t size)
@@ -204,6 +215,10 @@ void	lst_clear(void *a1, size_t size)
 	free(a->stat);
 }
 
+/*
+** TODO: full path to file
+*/
+
 void	read_arg(t_e *e, char *arg)
 {
 	t_arg	*a;
@@ -220,10 +235,7 @@ void	read_arg(t_e *e, char *arg)
 	}
 	e->lst = lst;
 	ft_sort(e);
-	if (e->fl.list == 1)
-		ft_lstiter(lst, print_list1);
-	else
-		ft_lstiter(lst, print_list2);
+	print_list(e);
 	ft_lstdel(&lst, lst_clear);
 	if (e->fl.rec == 1 && is_folder(arg))
 		read_rec_dir(e, arg);
