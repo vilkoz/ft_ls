@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/06 03:12:17 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/06 04:14:56 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ t_arg	*init_arg(t_e *e, t_stat *s, char *name)
 		arg->rights = NULL;
 	arg->nlinks = NULL;
 	arg->user = NULL;
+	arg->group = NULL;
 	arg->size = NULL;
 	arg->time = NULL;
 	return (arg);
@@ -206,19 +207,24 @@ void	lst_clear(void *a1, size_t size)
 void	read_arg(t_e *e, char *arg)
 {
 	t_arg	*a;
+	t_list	*lst;
 
+	lst = NULL;
 	if (is_folder(arg))
-		open_dir(e, arg);
+		open_dir(e, arg, &lst);
 	else
 	{
 		if ((a = stat_format(e, arg)) == NULL)
 			return ;
-		ft_lstadd(&(e->lst), ft_lstnew((void *)a, sizeof(t_arg)));
+		ft_lstadd(&lst, ft_lstnew((void *)a, sizeof(t_arg)));
 	}
+	e->lst = lst;
 	ft_sort(e);
 	if (e->fl.list == 1)
-		ft_lstiter(e->lst, print_list1);
+		ft_lstiter(lst, print_list1);
 	else
-		ft_lstiter(e->lst, print_list2);
-	ft_lstdel(&e->lst, lst_clear);
+		ft_lstiter(lst, print_list2);
+	ft_lstdel(&lst, lst_clear);
+	if (e->fl.rec == 1 && is_folder(arg))
+		read_rec_dir(e, arg);
 }
