@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 01:29:48 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 20:33:54 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 23:49:18 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ int		sort_mtime(t_list *l1, t_list *l2)
 
 	s1 = ((t_arg *)l1->content)->stat;
 	s2 = ((t_arg *)l2->content)->stat;
-	if (s2->st_mtimespec.tv_sec - s1->st_mtimespec.tv_sec != 0)
-		return (s2->st_mtimespec.tv_sec - s1->st_mtimespec.tv_sec);
+	if (s2->st_mtim.tv_sec - s1->st_mtim.tv_sec != 0)
+		return (s2->st_mtim.tv_sec - s1->st_mtim.tv_sec);
 	else
-		return (s2->st_mtimespec.tv_nsec - s1->st_mtimespec.tv_nsec);
+		return (s2->st_mtim.tv_nsec - s1->st_mtim.tv_nsec);
 }
 
 void	ft_sort(t_e *e, t_list *head)

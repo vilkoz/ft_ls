@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 23:03:06 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 21:24:50 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/08 00:52:06 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void		open_dir(t_e *e, char *arg, t_list **lst)
 	DIR			*dirp;
 	t_dirent	*dir;
 	t_arg		*a;
+	char		*tmp;
 
 	if ((dirp = opendir(arg)) == NULL)
 	{
@@ -53,8 +54,8 @@ void		open_dir(t_e *e, char *arg, t_list **lst)
 	{
 		if (e->fl.all != 1 && (dir->d_name[0] == '.'))
 			continue ;
-		if ((a = stat_format(e, ft_fj(ft_strdup(arg),
-			ft_strjoin("/", dir->d_name)))) == NULL)
+		tmp = ft_fj(ft_strdup(arg), ft_strjoin("/", dir->d_name));
+		if ((a = stat_format(e, &tmp)) == NULL)
 			return ;
 		ft_lstadd(lst, ft_lstnew((void *)a, sizeof(t_arg)));
 		free(a);

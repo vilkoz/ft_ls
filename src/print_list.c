@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 16:12:45 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 21:48:35 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/08 01:13:28 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,15 @@ void		print_list1(t_list *elem, t_len *len)
 	format_print(a.time, len->time, RIGHT);
 	ft_putchar(' ');
 	if ((tmp = ft_strrchr(a.name, '/')) != NULL)
-		ft_putendl(tmp + 1);
+	{
+		if (S_ISLNK(a.stat->st_mode) && a.targ_link != NULL)
+		{
+			ft_putstr(tmp + 1);
+			ft_putendl(a.targ_link);
+		}
+		else
+			ft_putendl(tmp + 1);
+	}
 	else
 		ft_putendl(a.name);
 }

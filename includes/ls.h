@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 20:56:25 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/08 00:45:49 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 # include <time.h>
 # define LEFT 23
 # define RIGHT 24
+#ifndef ABS
 # define ABS(x) (((x) < 0) ? -(x) : (x))
+#endif
 
 /*
 ** struct				dirent
@@ -80,6 +82,7 @@ typedef struct			s_arg
 	char				*size;
 	char				*time;
 	char				*name;
+	char				*targ_link;
 }						t_arg;
 
 void					check_arg(t_e *e, char *arg);
@@ -91,7 +94,7 @@ char					*ft_fj(char *s1, char *s2);
 char					*ft_fsub(char *s, size_t start, size_t end);
 void					ft_sort(t_e *e, t_list *head);
 void					print_list(t_e *e, t_list *head);
-t_arg					*stat_format(t_e *e, char *arg);
+t_arg					*stat_format(t_e *e, char **arg);
 void					lst_iter_len(t_list *lst,
 									void (*f)(t_list *l1, t_len *len),
 									t_len *len);
