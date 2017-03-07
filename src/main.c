@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:52:02 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 17:06:23 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 18:16:19 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int			main(int argc, char **argv)
 	init_e(&e);
 	if (argc == 1)
 	{
-		read_arg(&e, ".");
+		read_arg(&e, ft_strdup("."));
 		return (0);
 	}
 	i = 0;
@@ -41,11 +41,11 @@ int			main(int argc, char **argv)
 	e.va = 0;
 	while (++i < argc)
 		if (argv[i][0] != '-' && (e.va = 1))
-			read_arg(&e, argv[i]);
+			read_arg(&e, ft_strdup(argv[i]));
 		else if (e.va == 1)
-			read_arg(&e, argv[i]);
+			read_arg(&e, ft_strdup(argv[i]));
 	if (e.va == 0)
-		read_arg(&e, ".");
+		read_arg(&e, ft_strdup("."));
 		while ("leaks")
 		;
 	return (0);

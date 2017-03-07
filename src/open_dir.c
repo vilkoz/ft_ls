@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 23:03:06 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 17:12:32 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 17:46:15 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,8 @@ void		open_dir(t_e *e, char *arg, t_list **lst)
 		perror(arg);
 		return ;
 	}
-	if (e->fl.rec == 1)
-	{
-		ft_putchar('\n');
-		ft_putendl(arg);
-	}
+	(e->fl.rec == 1) ? ft_putchar('\n') : 23;
+	(e->fl.rec == 1) ? ft_putendl(arg) : 23;
 	while ((dir = readdir(dirp)) != NULL)
 	{
 		if (e->fl.all != 1)
@@ -60,6 +57,7 @@ void		open_dir(t_e *e, char *arg, t_list **lst)
 			ft_strjoin("/", dir->d_name)))) == NULL)
 			return ;
 		ft_lstadd(lst, ft_lstnew((void *)a, sizeof(t_arg)));
+		free(a);
 	}
 	closedir(dirp);
 }
