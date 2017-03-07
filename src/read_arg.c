@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/06 21:38:55 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 17:01:37 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,19 @@
 
 void	print_type(t_stat el, t_arg *a)
 {
-	if ((el.st_mode & S_IFREG) != 0)
+	if (S_ISREG(el.st_mode))
 		a->rights[0] = '-';
-	else if ((el.st_mode & S_IFDIR) != 0)
+	else if (S_ISDIR(el.st_mode))
 		a->rights[0] = 'd';
-	else if ((el.st_mode & S_IFIFO) != 0)
+	else if (S_ISFIFO(el.st_mode))
 		a->rights[0] = 'p';
-	else if ((el.st_mode & S_IFCHR) != 0)
+	else if (S_ISCHR(el.st_mode))
 		a->rights[0] = 'c';
-	else if ((el.st_mode & S_IFBLK) != 0)
+	else if (S_ISBLK(el.st_mode))
 		a->rights[0] = 'b';
-	else if ((el.st_mode & S_IFLNK) != 0)
+	else if (S_ISLNK(el.st_mode))
 		a->rights[0] = 'l';
-	else if ((el.st_mode & S_IFSOCK) != 0)
+	else if (S_ISSOCK(el.st_mode))
 		a->rights[0] = 's';
 }
 
@@ -108,6 +108,8 @@ char	*format_line(char *major, char *minor)
 		l_min--;
 	}
 	res[5] = ',';
+	free(minor);
+	free(major);
 	return (res);
 }
 
@@ -116,7 +118,7 @@ void	print_size(t_stat el, t_arg *a)
 	char	*major;
 	char	*minor;
 
-	if ((el.st_mode & S_IFCHR) != 0)
+	if (S_ISCHR(el.st_mode) != 0)
 	{
 		major = ft_itoa(el.st_rdev & 0xff00u >> 8);
 		minor = ft_itoa(minor(el.st_rdev));
@@ -131,11 +133,15 @@ void	print_time(t_stat el, t_arg *a)
 	char	*t;
 
 	t = ctime(&el.st_mtimespec.tv_sec);
-	if (labs(time(NULL) - el.st_mtimespec.tv_sec) <
+	if (ABS(time(NULL) - el.st_mtimespec.tv_sec) <
 			(60 * 60 * 24 * 365.2425) / 2)
 		t = ft_strsub(t, 4, 12);
 	else
-		t = ft_strjoin(ft_strsub(t, 4, 7), ft_strsub(t, 19, 5));
+	{
+		t = ft_fj(ft_strdup(ft_strsub(t, 4, 7)),
+			ft_strdup(ft_strsub(t, 19, 5)));
+		free(t);
+	}
 	a->time = ft_strdup(t);
 }
 
@@ -169,7 +175,7 @@ t_arg	*stat_format(t_e *e, char *arg)
 	t_stat		s;
 	t_arg		*a;
 
-	if ((stat(arg, &s)) == -1)
+	if ((lstat(arg, &s)) == -1)
 	{
 		perror(arg);
 		return (NULL);
@@ -193,7 +199,7 @@ int		is_folder(char *arg)
 
 	if ((stat(arg, &tmp)) == -1)
 		return (-1);
-	if (((tmp.st_mode) & S_IFDIR) != 0)
+	if (S_ISDIR(tmp.st_mode))
 		return (1);
 	else
 		return (0);

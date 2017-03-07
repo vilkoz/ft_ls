@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 23:03:06 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/06 15:42:42 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 17:12:32 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void		read_rec_dir(t_e *e, char *arg)
 		if (e->fl.rec == 1 && is_folder(dir->d_name) &&
 				ft_strcmp(dir->d_name, ".") != 0 &&
 				ft_strcmp(dir->d_name, "..") != 0)
-			read_arg(e, ft_strjoin(arg, ft_strjoin("/", dir->d_name)));
+			read_arg(e, ft_fj(ft_strdup(arg), ft_strjoin("/", dir->d_name)));
 	}
 	closedir(dirp);
 }
@@ -56,7 +56,7 @@ void		open_dir(t_e *e, char *arg, t_list **lst)
 		if (e->fl.all != 1)
 			if (dir->d_name[0] == '.')
 				continue ;
-		if ((a = stat_format(e, ft_strjoin(arg,
+		if ((a = stat_format(e, ft_fj(ft_strdup(arg),
 			ft_strjoin("/", dir->d_name)))) == NULL)
 			return ;
 		ft_lstadd(lst, ft_lstnew((void *)a, sizeof(t_arg)));

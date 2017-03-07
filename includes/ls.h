@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/06 18:21:56 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 16:39:31 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include <time.h>
 # define LEFT 23
 # define RIGHT 24
+# define ABS(x) (((x) < 0) ? -(x) : (x))
 
 /*
 ** struct				dirent
@@ -57,6 +58,8 @@ typedef struct			s_len
 	size_t				group;
 	size_t				size;
 	size_t				time;
+	quad_t				blocks;
+	t_fl				fl;
 }						t_len;
 
 typedef struct			s_e
@@ -86,5 +89,7 @@ void					ft_sort(t_e *e);
 int						is_folder(char *arg);
 void					read_rec_dir(t_e *e, char *arg);
 void					print_list(t_e *e);
+char					*ft_fj(char *s1, char *s2);
+char					*ft_fsub(char *s, size_t start, size_t end);
 
 #endif
