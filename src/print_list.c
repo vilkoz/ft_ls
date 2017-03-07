@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 16:12:45 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 20:33:12 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 21:48:35 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void		format_print(char *s, size_t max_len, int side)
 void		print_list1(t_list *elem, t_len *len)
 {
 	t_arg	a;
+	char	*tmp;
 
 	a = *(t_arg *)elem->content;
 	format_print(a.rights, len->rights, RIGHT);
@@ -47,16 +48,23 @@ void		print_list1(t_list *elem, t_len *len)
 	ft_putchar(' ');
 	format_print(a.time, len->time, RIGHT);
 	ft_putchar(' ');
-	ft_putendl(a.name);
+	if ((tmp = ft_strrchr(a.name, '/')) != NULL)
+		ft_putendl(tmp + 1);
+	else
+		ft_putendl(a.name);
 }
 
 void		print_list2(t_list *elem, t_len *len)
 {
 	t_arg	a;
+	char	*tmp;
 
 	(void)len;
 	a = *(t_arg *)elem->content;
-	ft_putendl(a.name);
+	if ((tmp = ft_strrchr(a.name, '/')) != NULL)
+		ft_putendl(tmp + 1);
+	else
+		ft_putendl(a.name);
 }
 
 void		lst_iter_len(t_list *lst, void (*f)(t_list *l1, t_len *len),
@@ -106,6 +114,7 @@ void		init_len(t_len *len, t_e *e)
 	len->time = 0;
 	len->blocks = 0;
 	len->fl = e->fl;
+	len->e = e;
 }
 
 void		print_list(t_e *e, t_list *head)
@@ -118,9 +127,12 @@ void		print_list(t_e *e, t_list *head)
 	if (e->fl.list == 1)
 	{
 		lst_iter_len(lst, count_len, &len);
-		ft_putstr("total ");
-		ft_putnbr(len.blocks);
-		ft_putchar('\n');
+		if (len.blocks != 0)
+		{
+			ft_putstr("total ");
+			ft_putnbr(len.blocks);
+			ft_putchar('\n');
+		}
 		lst_iter_len(lst, print_list1, &len);
 	}
 	else

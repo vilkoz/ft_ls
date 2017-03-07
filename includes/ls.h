@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 20:39:07 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 20:56:25 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,13 @@ typedef struct			s_fl
 	int					time;
 }						t_fl;
 
+typedef struct			s_e
+{
+	t_fl				fl;
+	int					va;
+	t_list				*lst;
+}						t_e;
+
 typedef struct			s_len
 {
 	size_t				rights;
@@ -60,14 +67,8 @@ typedef struct			s_len
 	size_t				time;
 	quad_t				blocks;
 	t_fl				fl;
+	t_e					*e;
 }						t_len;
-
-typedef struct			s_e
-{
-	t_fl				fl;
-	int					va;
-	t_list				*lst;
-}						t_e;
 
 typedef struct			s_arg
 {
@@ -91,5 +92,9 @@ char					*ft_fsub(char *s, size_t start, size_t end);
 void					ft_sort(t_e *e, t_list *head);
 void					print_list(t_e *e, t_list *head);
 t_arg					*stat_format(t_e *e, char *arg);
+void					lst_iter_len(t_list *lst,
+									void (*f)(t_list *l1, t_len *len),
+									t_len *len);
+void					init_len(t_len *len, t_e *e);
 
 #endif

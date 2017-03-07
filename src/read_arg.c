@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 20:40:00 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 21:51:38 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,9 +151,9 @@ t_arg	*init_arg(t_e *e, t_stat *s, char *name)
 	arg = (t_arg *)malloc(sizeof(t_arg));
 	arg->stat = (t_stat *)malloc(sizeof(t_stat));
 	arg->stat = ft_memcpy((void*)arg->stat, (void*)s, sizeof(t_stat));
-	if ((tmp = ft_strrchr(name, '/')) != NULL)
-		arg->name = ft_strsub(tmp + 1, 0, ft_strlen(tmp + 1));
-	else
+	// if ((tmp = ft_strrchr(name, '/')) != NULL)
+	// 	arg->name = ft_strsub(tmp + 1, 0, ft_strlen(tmp + 1));
+	// else
 		arg->name = ft_strdup(name);
 	if (e->fl.list == 1)
 		arg->rights = ft_strnew(11);
@@ -188,6 +188,7 @@ t_arg	*stat_format(t_e *e, char *arg)
 		print_time(s, a);
 	}
 	free(arg);
+	arg = NULL;
 	return (a);
 }
 
@@ -224,10 +225,20 @@ void	lst_clear(void *a1, size_t size)
 ** TODO: full path to file
 */
 
+void	recursive(t_list *l1, t_len *len)
+{
+	t_arg	*arg;
+
+	arg = ((t_arg*)l1->content);
+	if (len->fl.rec == 1 && is_folder(arg->name) == 1)
+		read_rec_dir(len->e, ft_strdup(arg->name));
+}
+
 void	read_arg(t_e *e, char *arg)
 {
 	t_arg	*a;
 	t_list	*lst;
+	t_len	len;
 
 	lst = NULL;
 	if (is_folder(arg))
@@ -240,8 +251,9 @@ void	read_arg(t_e *e, char *arg)
 	}
 	ft_sort(e, lst);
 	print_list(e, lst);
+	init_len(&len, e);
+	lst_iter_len(lst, recursive, &len);
 	ft_lstdel(&lst, lst_clear);
-	if (e->fl.rec == 1 && is_folder(arg))
-		read_rec_dir(e, arg);
-	free(arg);
+	if (arg != NULL)
+		free(arg);
 }

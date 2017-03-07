@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:52:02 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 20:40:21 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 21:49:42 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int			main(int argc, char **argv)
 			read_arg(&e, ft_strdup(argv[i]));
 	if (e.va == 0)
 		read_arg(&e, ft_strdup("."));
-		// while ("leaks")
-		// ;
+		while ("leaks")
+		;
 	return (0);
 }

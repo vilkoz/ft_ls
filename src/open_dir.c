@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 23:03:06 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 17:46:15 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 21:24:50 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,9 @@ void		read_rec_dir(t_e *e, char *arg)
 		perror(arg);
 		return ;
 	}
+	(e->fl.rec == 1) ? ft_putchar('\n') : 23;
+	(e->fl.rec == 1) ? ft_putstr(arg) : 23;
+	(e->fl.rec == 1) ? ft_putendl(":") : 23;
 	while ((dir = readdir(dirp)) != NULL)
 	{
 		if (e->fl.all != 1)
@@ -46,13 +49,10 @@ void		open_dir(t_e *e, char *arg, t_list **lst)
 		perror(arg);
 		return ;
 	}
-	(e->fl.rec == 1) ? ft_putchar('\n') : 23;
-	(e->fl.rec == 1) ? ft_putendl(arg) : 23;
 	while ((dir = readdir(dirp)) != NULL)
 	{
-		if (e->fl.all != 1)
-			if (dir->d_name[0] == '.')
-				continue ;
+		if (e->fl.all != 1 && (dir->d_name[0] == '.'))
+			continue ;
 		if ((a = stat_format(e, ft_fj(ft_strdup(arg),
 			ft_strjoin("/", dir->d_name)))) == NULL)
 			return ;

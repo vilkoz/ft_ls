@@ -6,11 +6,13 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 01:00:29 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/06 16:00:41 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 20:45:22 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
+
+// TODO: fix -;
 
 void		enable_flag(t_e *e, char *arg)
 {
