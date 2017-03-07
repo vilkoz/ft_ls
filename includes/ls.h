@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 16:39:31 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 20:39:07 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,12 @@ typedef struct			s_arg
 void					check_arg(t_e *e, char *arg);
 void					read_arg(t_e *e, char *arg);
 void					open_dir(t_e *e, char *arg, t_list **lst);
-t_arg					*stat_format(t_e *e, char *arg);
-void					ft_sort(t_e *e);
 int						is_folder(char *arg);
 void					read_rec_dir(t_e *e, char *arg);
-void					print_list(t_e *e);
 char					*ft_fj(char *s1, char *s2);
 char					*ft_fsub(char *s, size_t start, size_t end);
+void					ft_sort(t_e *e, t_list *head);
+void					print_list(t_e *e, t_list *head);
+t_arg					*stat_format(t_e *e, char *arg);
 
 #endif

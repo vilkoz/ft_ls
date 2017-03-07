@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 20:18:50 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 20:40:00 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,17 +135,11 @@ void	print_time(t_stat el, t_arg *a)
 	t = ctime(&el.st_mtimespec.tv_sec);
 	if (ABS(time(NULL) - el.st_mtimespec.tv_sec) <
 			(60 * 60 * 24 * 365.2425) / 2)
-	{
 		t = ft_strsub(t, 4, 12);
-		printf("%s\n", t);
-	}
 	else
-	{
-		t = ft_strjoin(ft_strsub(t, 4, 7),
+		t = ft_fj(ft_strsub(t, 4, 7),
 			ft_strsub(t, 19, 5));
-		printf("%s\n", t);
-	}
-	a->time = ft_strdup(t);
+	a->time = t;
 }
 
 t_arg	*init_arg(t_e *e, t_stat *s, char *name)
@@ -244,9 +238,8 @@ void	read_arg(t_e *e, char *arg)
 			return ;
 		ft_lstadd(&lst, ft_lstnew((void *)a, sizeof(t_arg)));
 	}
-	e->lst = lst;
-	ft_sort(e);
-	print_list(e);
+	ft_sort(e, lst);
+	print_list(e, lst);
 	ft_lstdel(&lst, lst_clear);
 	if (e->fl.rec == 1 && is_folder(arg))
 		read_rec_dir(e, arg);

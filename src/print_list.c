@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 16:12:45 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/07 16:11:26 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/07 20:33:12 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,12 +108,12 @@ void		init_len(t_len *len, t_e *e)
 	len->fl = e->fl;
 }
 
-void		print_list(t_e *e)
+void		print_list(t_e *e, t_list *head)
 {
 	t_list		*lst;
 	t_len		len;
 
-	lst = e->lst;
+	lst = head;
 	init_len(&len, e);
 	if (e->fl.list == 1)
 	{
