@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 16:12:45 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/08 01:13:28 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/08 15:44:38 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ void		count_len(t_list *l, t_len *len)
 	size_t	size;
 
 	a = (t_arg*)l->content;
-	if (len->fl.list == 1 && len->fl.all == 0 && a->name[0] != '.')
+	if (len->fl.list == 1 && len->fl.all == 0 &&
+			ft_strrchr(a->name, '/')[0] != '.')
 		len->blocks += a->stat->st_blocks;
 	else if (len->fl.list == 1 && len->fl.all == 1)
 		len->blocks += a->stat->st_blocks;

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/08 01:14:55 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/08 19:45:20 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,13 @@ void	print_size(t_stat el, t_arg *a)
 
 void	print_time(t_stat el, t_arg *a)
 {
-	char	*t;
+	char			*t;
+	long double		delta;
 
-	t = ctime(&el.st_mtim.tv_sec);
-	if (ABS(time(NULL) - el.st_mtim.tv_sec) <
-			(60 * 60 * 24 * 365.2425) / 2)
+	t = ctime(&el.st_mtimespec.tv_sec);
+	delta = time(NULL) - el.st_mtimespec.tv_sec;
+	if ((delta > 0 && delta < SIXMONTH)
+		|| (delta < 0 && delta < -SIXMONTH))
 		t = ft_strsub(t, 4, 12);
 	else
 		t = ft_fj(ft_strsub(t, 4, 7),
@@ -176,7 +178,8 @@ t_arg	*stat_format(t_e *e, char **arg)
 
 	if ((lstat(*arg, &s)) == -1)
 	{
-		perror(*arg);
+		perror(ft_strjoin("./ft_ls: ", *arg));
+		e->ret = 1;
 		return (NULL);
 	}
 	a = init_arg(e, &s, *arg);
@@ -234,7 +237,11 @@ void	recursive(t_list *l1, t_len *len)
 	t_arg	*arg;
 
 	arg = ((t_arg*)l1->content);
-	if (len->fl.rec == 1 && is_folder(arg->name) == 1)
+	if ((len->fl.all == 0 && len->fl.rec == 1 && is_folder(arg->name) == 1)
+		|| (len->fl.all == 1
+		&& (ft_strcmp(ft_strrchr(arg->name, '/') + 1, "..") != 0
+		&& ft_strcmp(ft_strrchr(arg->name, '/') + 1, ".") != 0
+		&& is_folder(arg->name) == 1)))
 	{
 		ft_putchar('\n');
 		ft_putstr(arg->name);

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/08 00:45:49 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/08 20:24:28 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@
 # include <time.h>
 # define LEFT 23
 # define RIGHT 24
-#ifndef ABS
-# define ABS(x) (((x) < 0) ? -(x) : (x))
-#endif
+# ifndef ABS
+#  define ABS(x) (((x) < 0) ? -(x) : (x))
+# endif
+# define SIXMONTH ((365 / 2) * 86400)
 
 /*
 ** struct				dirent
@@ -57,6 +58,7 @@ typedef struct			s_e
 	t_fl				fl;
 	int					va;
 	t_list				*lst;
+	int					ret;
 }						t_e;
 
 typedef struct			s_len
@@ -85,7 +87,14 @@ typedef struct			s_arg
 	char				*targ_link;
 }						t_arg;
 
+/*
+** ft_check_arg.c
+*/
+
 void					check_arg(t_e *e, char *arg);
+int						is_arg_flag(char *arg);
+int						is_flag(char c);
+
 void					read_arg(t_e *e, char *arg);
 void					open_dir(t_e *e, char *arg, t_list **lst);
 int						is_folder(char *arg);
@@ -99,5 +108,6 @@ void					lst_iter_len(t_list *lst,
 									void (*f)(t_list *l1, t_len *len),
 									t_len *len);
 void					init_len(t_len *len, t_e *e);
+
 
 #endif
