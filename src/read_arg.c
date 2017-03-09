@@ -6,15 +6,11 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/09 08:57:06 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/09 21:20:13 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
-
-/*
-** TODO: add stat to list
-*/
 
 void	print_type(t_stat el, t_arg *a)
 {
@@ -59,6 +55,14 @@ void	print_rights(t_stat el, t_arg *a)
 	a->rights[4] = ((el.st_mode & S_IRGRP) != 0) ? 'r' : '-';
 	a->rights[5] = ((el.st_mode & S_IWGRP) != 0) ? 'w' : '-';
 	a->rights[6] = ((el.st_mode & S_IXGRP) != 0) ? 'x' : '-';
+	// if ((el.st_mode & S_ISGID) && (el.st_mode & S_IXGRP))
+	// 	a->rights[6] = 's';
+	// else if ((el.st_mode & S_ISGID) && (el.st_mode & S_IXGRP) == 0)
+	// 	a->rights[6] = 'S';
+	// else if ((el.st_mode & S_ISGID) == 0 && (el.st_mode & S_IXGRP))
+	// 	a->rights[6] = 'x';
+	// else
+	// 	a->rights[6] = '-';
 	a->rights[7] = ((el.st_mode & S_IROTH) != 0) ? 'r' : '-';
 	a->rights[8] = ((el.st_mode & S_IWOTH) != 0) ? 'w' : '-';
 	if ((el.st_mode & S_IXOTH) && (el.st_mode & S_ISVTX) == 0)
@@ -133,10 +137,10 @@ void	print_time(t_stat el, t_arg *a)
 	char			*t;
 	long double		delta;
 
-	t = ctime(&el.st_mtim.tv_sec);
-	delta = time(NULL) - el.st_mtim.tv_sec;
+	t = ctime(&el.st_mtimespec.tv_sec);
+	delta = time(NULL) - el.st_mtimespec.tv_sec;
 	if ((delta > 0 && delta < SIXMONTH)
-		|| (delta < 0 && delta < -SIXMONTH))
+		|| (delta < 0 && delta > -SIXMONTH))
 		t = ft_strsub(t, 4, 12);
 	else
 		t = ft_fj(ft_strsub(t, 4, 7),
@@ -179,7 +183,6 @@ t_arg	*stat_format(t_e *e, char **arg)
 
 	if ((lstat(*arg, &s)) == -1)
 	{
-		perror(ft_strjoin("./ft_ls: ", *arg));
 		e->ret = 1;
 		return (NULL);
 	}
@@ -206,8 +209,10 @@ int		is_folder(char *arg)
 		return (-1);
 	if (S_ISDIR(tmp.st_mode) && !S_ISLNK(tmp.st_mode))
 		return (1);
-	else if (S_ISLNK(tmp.st_mode))
+	else if (S_ISLNK(tmp.st_mode) && S_ISDIR(tmp.st_mode))
 		return (2);
+	else if (S_ISLNK(tmp.st_mode) && !S_ISDIR(tmp.st_mode))
+		return (3);
 	else
 		return (0);
 }
@@ -229,17 +234,13 @@ void	lst_clear(void *a1, size_t size)
 	free(a);
 }
 
-/*
-** TODO: full path to file
-*/
-
 void	recursive(t_list *l1, t_len *len)
 {
 	t_arg	*arg;
 
 	arg = ((t_arg*)l1->content);
 	if ((len->fl.all == 0 && len->fl.rec == 1 && is_folder(arg->name) == 1)
-		|| (len->fl.all == 1
+		|| (len->fl.all == 1 && len->fl.rec
 		&& (ft_strcmp(ft_strrchr(arg->name, '/') + 1, "..") != 0
 		&& ft_strcmp(ft_strrchr(arg->name, '/') + 1, ".") != 0
 		&& is_folder(arg->name) == 1)))
@@ -255,21 +256,26 @@ void	read_arg(t_e *e, char *arg)
 {
 	t_list	*lst;
 	t_len	len;
+	t_arg	*a;
 
 	lst = NULL;
-	if ((is_folder(arg) == 1) ||
-		(is_folder(arg) == 2 && e->fl.list == 0))
+	if (e->arg_conunt >= 2)
+		e->print_dir_name = 1;
+	if ((is_folder(arg) == 1) || (is_folder(arg) == 2 && e->fl.list == 0))
 		open_dir(e, arg, &lst);
 	else
+	{
+		if ((a = stat_format(e, &arg)) == NULL)
+		{
+			perror(ft_strjoin("./ft_ls: ", arg));
+			return ;
+		}
 		return ;
+	}
 	ft_sort(e, lst);
 	print_list(e, lst);
 	init_len(&len, e);
 	lst_iter_len(lst, recursive, &len);
 	ft_lstdel(&lst, lst_clear);
-	if (arg != NULL)
-	{
-		free(arg);
-		arg = NULL;
-	}
+	ft_memdel((void**)&arg);
 }

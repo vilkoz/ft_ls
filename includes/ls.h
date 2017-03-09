@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/09 08:48:33 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/09 15:43:15 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,9 @@ typedef struct			s_e
 	int					va;
 	t_list				*lst;
 	int					ret;
+	int					print_dir_name;
+	int					arg_conunt;
+	int					arg_num;
 	int					was_solo;
 }						t_e;
 

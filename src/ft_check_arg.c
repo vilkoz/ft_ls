@@ -6,17 +6,15 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 01:00:29 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/08 16:02:08 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/09 17:08:10 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ls.h"
 
-// TODO: fix -;
-
 int			is_flag(char c)
 {
-	if (c == 'l' || c == 'R' || c == 'r' || c == 'a' || c == 't')
+	if (c == 'l' || c == 'R' || c == 'r' || c == 'a' || c == 't' || c == '1')
 		return (1);
 	else
 		return (0);
@@ -62,5 +60,10 @@ void		check_arg(t_e *e, char *arg)
 	if (arg[0] == '-' && arg[1] != '\0' && e->va == 0)
 		enable_flag(e, arg);
 	else
+	{
 		e->va = 1;
+		e->arg_conunt += 1;
+		if (is_folder(arg) == 0)
+			e->was_solo = 1;
+	}
 }

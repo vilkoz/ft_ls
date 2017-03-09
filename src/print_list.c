@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 16:12:45 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/09 08:36:48 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/09 17:28:57 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,23 +43,17 @@ void		print_list1(t_list *elem, t_len *len)
 	format_print(a.user, len->user, LEFT);
 	ft_putstr("  ");
 	format_print(a.group, len->group, LEFT);
-	ft_putstr("  ");
+	(!S_ISCHR(a.stat->st_mode)) ? ft_putstr("  ") : 23;
 	format_print(a.size, len->size, RIGHT);
 	ft_putchar(' ');
 	format_print(a.time, len->time, RIGHT);
 	ft_putchar(' ');
 	if ((tmp = ft_strrchr(a.name, '/')) != NULL && a.is_solo == 0)
-	{
 		ft_putstr(tmp + 1);
-		ft_putendl(a.targ_link);
-		(a.targ_link == NULL) ? ft_putchar('\n') : 23;
-	}
 	else
-	{
 		ft_putstr(a.name);
-		ft_putendl(a.targ_link);
-		(a.targ_link == NULL) ? ft_putchar('\n') : 23;
-	}
+	ft_putendl(a.targ_link);
+	(a.targ_link == NULL) ? ft_putchar('\n') : 23;
 }
 
 void		print_list2(t_list *elem, t_len *len)
@@ -149,7 +143,7 @@ void		print_list(t_e *e, t_list *head)
 	if (e->fl.list == 1)
 	{
 		lst_iter_len(lst, count_len, &len);
-		if (len.fl.list == 1 && e->lst == NULL)
+		if (len.fl.list == 1 && e->lst == NULL && lst != NULL)
 		{
 			ft_putstr("total ");
 			ft_putnbr(len.blocks);
