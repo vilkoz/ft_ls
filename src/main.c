@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:52:02 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/08 20:40:14 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/09 08:49:08 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void		init_e(t_e *e)
 	e->va = 0;
 	e->lst = NULL;
 	e->ret = 0;
+	e->was_solo = 0;
 }
 
 int			invalid_arg(char *arg)
@@ -44,20 +45,46 @@ int			invalid_arg(char *arg)
 	return (1);
 }
 
+void		print_solo(t_e *e)
+{
+	if (e->lst == NULL)
+		return ;
+	ft_sort(e, e->lst);
+	print_list(e, e->lst);
+	ft_lstdel(&e->lst, lst_clear);
+}
+
+void		check_solo(t_e *e, char *arg)
+{
+	t_arg	*a;
+
+	if ((is_folder(arg) == 1) ||
+		(is_folder(arg) == 2 && e->fl.list == 0))
+		return ;
+	else if (is_arg_flag(arg) == 0)
+	{
+		if ((a = stat_format(e, &arg)) == NULL)
+			return ;
+		a->is_solo = 1;
+		e->was_solo = 1;
+		ft_lstadd(&e->lst, ft_lstnew((void *)a, sizeof(t_arg)));
+	}
+	ft_memdel((void *)&arg);
+}
+
 int			main(int argc, char **argv)
 {
 	t_e		e;
 	int		i;
 
 	init_e(&e);
-	if (argc == 1)
-	{
-		read_arg(&e, ft_strdup("."));
-		return (0);
-	}
 	i = 0;
 	while (++i < argc)
+	{
 		check_arg(&e, argv[i]);
+		check_solo(&e, ft_strdup(argv[i]));
+	}
+	print_solo(&e);
 	i = 0;
 	e.va = 0;
 	while (++i < argc)

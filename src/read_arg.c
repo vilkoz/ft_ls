@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 14:47:40 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/08 19:45:20 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/09 08:57:06 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,8 +133,8 @@ void	print_time(t_stat el, t_arg *a)
 	char			*t;
 	long double		delta;
 
-	t = ctime(&el.st_mtimespec.tv_sec);
-	delta = time(NULL) - el.st_mtimespec.tv_sec;
+	t = ctime(&el.st_mtim.tv_sec);
+	delta = time(NULL) - el.st_mtim.tv_sec;
 	if ((delta > 0 && delta < SIXMONTH)
 		|| (delta < 0 && delta < -SIXMONTH))
 		t = ft_strsub(t, 4, 12);
@@ -168,6 +168,7 @@ t_arg	*init_arg(t_e *e, t_stat *s, char *name)
 	arg->group = NULL;
 	arg->size = NULL;
 	arg->time = NULL;
+	arg->is_solo = 0;
 	return (arg);
 }
 
@@ -252,7 +253,6 @@ void	recursive(t_list *l1, t_len *len)
 
 void	read_arg(t_e *e, char *arg)
 {
-	t_arg	*a;
 	t_list	*lst;
 	t_len	len;
 
@@ -261,11 +261,7 @@ void	read_arg(t_e *e, char *arg)
 		(is_folder(arg) == 2 && e->fl.list == 0))
 		open_dir(e, arg, &lst);
 	else
-	{
-		if ((a = stat_format(e, &arg)) == NULL)
-			return ;
-		ft_lstadd(&lst, ft_lstnew((void *)a, sizeof(t_arg)));
-	}
+		return ;
 	ft_sort(e, lst);
 	print_list(e, lst);
 	init_len(&len, e);

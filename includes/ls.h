@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/08 20:24:28 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/09 08:48:33 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct			s_e
 	int					va;
 	t_list				*lst;
 	int					ret;
+	int					was_solo;
 }						t_e;
 
 typedef struct			s_len
@@ -85,6 +86,7 @@ typedef struct			s_arg
 	char				*time;
 	char				*name;
 	char				*targ_link;
+	int					is_solo;
 }						t_arg;
 
 /*
@@ -108,6 +110,7 @@ void					lst_iter_len(t_list *lst,
 									void (*f)(t_list *l1, t_len *len),
 									t_len *len);
 void					init_len(t_len *len, t_e *e);
-
+void					recursive(t_list *l1, t_len *len);
+void					lst_clear(void *a1, size_t size);
 
 #endif
