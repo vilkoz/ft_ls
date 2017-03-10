@@ -1,0 +1,25 @@
+total 80
+-rw-------  1 root  daemon     0 Mar  7 14:11 automount.initialized
+----------  1 root  daemon     0 Mar  7 14:11 com.apple.WindowServer.didRunThisBoot
+-r--------  1 root  daemon     0 Mar  7 14:10 com.apple.loginwindow.didRunThisBoot
+-rw-r--r--  1 root  daemon     0 Mar  7 15:33 com.apple.softwareupdate.availableupdatesupdated
+-rw-------  1 root  daemon     3 Mar  7 14:11 cron.pid
+srwxrwxrwx  1 root  daemon     0 Mar  7 14:10 cupsd
+drwxr-xr-x  8 root  daemon   272 Mar  9 20:07 diagnosticd
+-rw-r--r--  1 root  daemon     4 Mar  7 14:10 diskarbitrationd.pid
+-rw-r--r--  1 root  daemon     4 Mar  7 14:21 hdiejectd.pid
+srw-rw-rw-  1 root  daemon     0 Mar  7 14:10 mDNSResponder
+drwx------  3 root  daemon   102 Mar 10 14:32 mds
+-rw-r--r--  1 root  daemon     4 Mar  7 14:10 mds.pid
+-rw-r--r--  1 root  daemon     3 Mar  7 14:11 ntpd.pid
+srwxrwxrwx  1 root  daemon     0 Mar  7 14:10 portmap.socket
+srwxrwxrwx  1 root  daemon     0 Mar  7 14:11 pppconfd
+-rw-r--r--  1 root  daemon   256 Mar  7 14:11 resolv.conf
+-rw-r--r--  1 root  daemon    30 Mar  7 14:11 sntp.log
+srw-rw-rw-  1 root  daemon     0 Mar  7 14:10 syslog
+-rw-r--r--@ 1 root  daemon     4 Mar  7 14:10 syslog.pid
+-r--r--r--  1 root  daemon     0 Mar  7 14:10 systemkeychaincheck.done
+srw-rw-rw-  1 root  daemon     0 Mar  7 14:10 systemkeychaincheck.socket
+srwxrwxrwx  1 root  daemon     0 Mar  7 14:10 usbmuxd
+-rw-r--r--@ 1 root  daemon  6908 Mar 10 14:10 utmpx
+srw-------  1 root  daemon     0 Mar  7 14:10 vpncontrol.sock

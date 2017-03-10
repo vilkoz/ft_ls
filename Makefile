@@ -6,7 +6,7 @@
 #    By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/11/23 14:08:11 by vrybalko          #+#    #+#              #
-#    Updated: 2017/03/09 17:12:21 by vrybalko         ###   ########.fr        #
+#    Updated: 2017/03/10 17:12:51 by vrybalko         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,11 @@ SRCS = main.c					\
 			 open_dir.c			\
 			 sort.c					\
 			 print_list.c		\
-			 free_strings.c	
+			 free_strings.c	\
+			 fillers.c			\
+			 fillers1.c			\
+			 is_folder.c		\
+			 list_tools.c
 
 BINS = $(addprefix $(BIN_DIR), $(SRCS:.c=.o))
 

@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:38:31 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/09 15:43:15 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/10 17:12:18 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,11 +109,35 @@ char					*ft_fsub(char *s, size_t start, size_t end);
 void					ft_sort(t_e *e, t_list *head);
 void					print_list(t_e *e, t_list *head);
 t_arg					*stat_format(t_e *e, char **arg);
-void					lst_iter_len(t_list *lst,
-									void (*f)(t_list *l1, t_len *len),
-									t_len *len);
 void					init_len(t_len *len, t_e *e);
 void					recursive(t_list *l1, t_len *len);
 void					lst_clear(void *a1, size_t size);
+int						is_hidden(char *name);
+
+/*
+** fillers.c
+*/
+
+void					print_type(t_stat el, t_arg *a);
+void					print_rights(t_stat el, t_arg *a);
+void					print_nlink(t_stat el, t_arg *a);
+void					print_user(t_stat el, t_arg *a);
+
+/*
+** fillers1.c
+*/
+
+char					*format_line(char *major, char *minor);
+void					print_size(t_stat el, t_arg *a);
+void					print_time(t_stat el, t_arg *a);
+
+/*
+** list_tools.c
+*/
+void					lst_iter_len(t_list *lst,
+									void (*f)(t_list *l1, t_len *len),
+									t_len *len);
+void					count_len(t_list *l, t_len *len);
+void					init_len(t_len *len, t_e *e);
 
 #endif
