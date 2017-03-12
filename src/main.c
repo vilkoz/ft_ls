@@ -6,7 +6,7 @@
 /*   By: vrybalko <vrybalko@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/05 00:52:02 by vrybalko          #+#    #+#             */
-/*   Updated: 2017/03/10 15:58:04 by vrybalko         ###   ########.fr       */
+/*   Updated: 2017/03/12 16:05:58 by vrybalko         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,9 +91,7 @@ int			main(int argc, char **argv)
 	i = 0;
 	e.va = 0;
 	while (++i < argc)
-		if ((!is_arg_flag(argv[i]) && is_folder(argv[i]) && argv[i][0] == '-'
-		&& (e.va = 1)) || (!is_arg_flag(argv[i]) && argv[i][0] != '-'
-		&& (e.va = 1)))
+		if (!is_arg_flag(argv[i]) && argv[i][0] != '-' && (e.va = 1))
 			read_arg(&e, ft_strdup(argv[i]));
 		else if (argv[i][0] == '-' && !is_arg_flag(argv[i]))
 			return (invalid_arg(argv[i]));
